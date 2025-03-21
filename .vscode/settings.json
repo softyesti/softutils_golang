@@ -4,9 +4,16 @@
   "editor.wordWrapColumn": 80,
   "editor.rulers": [80],
   "cSpell.words": [
+    "0",
+    "23",
+    "bytedance",
+    "cosmtrek",
     "github",
     "gonic",
+    "googl",
+    "leodi",
     "msword",
+    "o-urn",
     "officedocument",
     "openxmlformats",
     "outdir",
@@ -19,7 +26,9 @@
     "softyesti",
     "spreadsheetml",
     "testdata",
+    "v0",
     "wkhtmltopdf",
     "wordprocessingml"
-  ]
+  ],
+  "makefile.configureOnOpen": false
 }
