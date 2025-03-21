@@ -4,10 +4,10 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
-.PHONY: default run
+.PHONY: install run build upgrade clean
 
 # vars
-APP_NAME=softutils_golanf
+APP_NAME=softutils_golang
 
 default: run
 
@@ -23,6 +23,10 @@ run:
 
 build:
 	@echo "Building the application"
+
+upgrade: 
+	@echo "Upgrading go mod packages..."
+	@go get -u ./...
 
 clean:
 	@echo "Cleaning the application"
