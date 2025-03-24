@@ -18,4 +18,5 @@ var (
 	ErrTokenParsing      = errors.New("jwt: failed to parse token")
 	ErrTokenVerification = errors.New("jwt: token verification failed")
 	ErrClaimsCopy        = errors.New("jwt: failed to copy claims data")
+	ErrEmptyAuthTime     = errors.New("jwt: auth time is empty")
 )
