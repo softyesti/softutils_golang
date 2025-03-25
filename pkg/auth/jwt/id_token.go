@@ -33,10 +33,10 @@ func (t *JWT) GenIdToken(
 
 // Parses an id token and returns the claims.
 // It verifies the token information and returns an error if verification fails.
-func (t *JWT) ParseIdToken(subject, token string) (IdTokenClaims, error) {
+func (t *JWT) ParseIdToken(token string) (IdTokenClaims, error) {
 	claims := IdTokenClaims{}
 
-	parsed, err := t.parse(subject, token, &claims)
+	parsed, err := t.parse(token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

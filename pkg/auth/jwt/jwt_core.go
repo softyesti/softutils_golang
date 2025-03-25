@@ -25,15 +25,15 @@ type IJWT interface {
 
 	// Parses an ID token and returns the claims.
 	// It verifies the token information and returns an error if verification fails.
-	ParseIdToken(subject, token string) (IdTokenClaims, error)
+	ParseIdToken(token string) (IdTokenClaims, error)
 
 	// Parses an access token and returns the claims.
 	// It verifies the token information and returns an error if verification fails.
-	ParseAccessToken(subject, token string) (AccessTokenClaims, error)
+	ParseAccessToken(token string) (AccessTokenClaims, error)
 
 	// Parses a refresh token and returns the claims.
 	// It verifies the token information and returns an error if verification fails.
-	ParseRefreshToken(subject, token string) (RefreshTokenClaims, error)
+	ParseRefreshToken(token string) (RefreshTokenClaims, error)
 }
 
 func (t *JWT) gen(
@@ -78,18 +78,20 @@ func (t *JWT) sign(claims jwt.Claims) (string, error) {
 	return signed, nil
 }
 
-func (t *JWT) parse(
-	subject, token string,
-	claims jwt.Claims,
-) (jwt.Claims, error) {
+func (t *JWT) parse(token string, claims jwt.Claims) (jwt.Claims, error) {
 	if token == "" {
 		return jwt.RegisteredClaims{}, ErrEmptyToken
 	}
 
-	verifies, err := t.verify(subject)
-	if err != nil {
-		return jwt.RegisteredClaims{},
-			errors.Wrap(err, ErrTokenVerification.Error())
+	options := []jwt.ParserOption{
+		jwt.WithIssuedAt(),
+		jwt.WithIssuer(t.Issuer),
+		jwt.WithExpirationRequired(),
+		jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Name}),
+	}
+
+	for _, audience := range t.Audience {
+		options = append(options, jwt.WithAudience(audience))
 	}
 
 	parsed, err := jwt.ParseWithClaims(
@@ -98,7 +100,7 @@ func (t *JWT) parse(
 		func(*jwt.Token) (any, error) {
 			return []byte(t.Secret), nil
 		},
-		verifies...,
+		options...,
 	)
 
 	if err != nil {
@@ -110,24 +112,4 @@ func (t *JWT) parse(
 	}
 
 	return parsed.Claims, nil
-}
-
-func (t *JWT) verify(subject string) ([]jwt.ParserOption, error) {
-	if subject == "" {
-		return nil, ErrEmptySubject
-	}
-
-	options := []jwt.ParserOption{
-		jwt.WithIssuedAt(),
-		jwt.WithSubject(subject),
-		jwt.WithIssuer(t.Issuer),
-		jwt.WithExpirationRequired(),
-		jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Name}),
-	}
-
-	for _, audience := range t.Audience {
-		options = append(options, jwt.WithAudience(audience))
-	}
-
-	return options, nil
 }

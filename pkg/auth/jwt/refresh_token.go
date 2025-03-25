@@ -33,10 +33,10 @@ func (t *JWT) GenRefreshToken(
 
 // Parses a refresh token and returns the claims.
 // It verifies the token information and returns an error if verification fails.
-func (t *JWT) ParseRefreshToken(subject, token string) (RefreshTokenClaims, error) {
+func (t *JWT) ParseRefreshToken(token string) (RefreshTokenClaims, error) {
 	claims := RefreshTokenClaims{}
 
-	parsed, err := t.parse(subject, token, &claims)
+	parsed, err := t.parse(token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

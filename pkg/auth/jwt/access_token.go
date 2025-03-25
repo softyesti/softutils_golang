@@ -33,10 +33,10 @@ func (t *JWT) GenAccessToken(
 
 // Parses an access token and returns the claims.
 // It verifies the token information and returns an error if verification fails.
-func (t *JWT) ParseAccessToken(subject, token string) (AccessTokenClaims, error) {
+func (t *JWT) ParseAccessToken(token string) (AccessTokenClaims, error) {
 	claims := AccessTokenClaims{}
 
-	parsed, err := t.parse(subject, token, &claims)
+	parsed, err := t.parse(token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

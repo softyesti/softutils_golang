@@ -58,19 +58,19 @@ func main() {
 	fmt.Println("Refresh Token:", refreshToken)
 
 	// Parse the ID token
-	idClaims, err := instance.ParseIdToken("subject", idToken)
+	idClaims, err := instance.ParseIdToken(idToken)
 	if err != nil {
 		panic(err)
 	}
 
 	// Parse the Access token
-	accessClaims, err := instance.ParseAccessToken("subject", accessToken)
+	accessClaims, err := instance.ParseAccessToken(accessToken)
 	if err != nil {
 		panic(err)
 	}
 
 	// Parse the Refresh token
-	refreshClaims, err := instance.ParseRefreshToken("subject", refreshToken)
+	refreshClaims, err := instance.ParseRefreshToken(refreshToken)
 	if err != nil {
 		panic(err)
 	}
