@@ -23,7 +23,7 @@ func (t *JWT) GenRefreshToken(
 	claims := options.RefreshTokenClaims
 	claims.RegisteredClaims = registered
 
-	signed, err := t.sign(claims)
+	signed, err := t.sign(t.RefreshSecret, claims)
 	if err != nil {
 		return "", errors.Wrap(err, ErrTokenSigning.Error())
 	}
@@ -36,7 +36,7 @@ func (t *JWT) GenRefreshToken(
 func (t *JWT) ParseRefreshToken(token string) (RefreshTokenClaims, error) {
 	claims := RefreshTokenClaims{}
 
-	parsed, err := t.parse(token, &claims)
+	parsed, err := t.parse(t.RefreshSecret, token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

@@ -23,7 +23,7 @@ func (t *JWT) GenAccessToken(
 	claims := options.AccessTokenClaims
 	claims.RegisteredClaims = registered
 
-	signed, err := t.sign(claims)
+	signed, err := t.sign(t.AccessSecret, claims)
 	if err != nil {
 		return "", errors.Wrap(err, ErrTokenSigning.Error())
 	}
@@ -36,7 +36,7 @@ func (t *JWT) GenAccessToken(
 func (t *JWT) ParseAccessToken(token string) (AccessTokenClaims, error) {
 	claims := AccessTokenClaims{}
 
-	parsed, err := t.parse(token, &claims)
+	parsed, err := t.parse(t.AccessSecret, token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

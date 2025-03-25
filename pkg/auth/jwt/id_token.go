@@ -23,7 +23,7 @@ func (t *JWT) GenIdToken(
 	claims := options.IdTokenClaims
 	claims.RegisteredClaims = registered
 
-	signed, err := t.sign(claims)
+	signed, err := t.sign(t.IdSecret, claims)
 	if err != nil {
 		return "", errors.Wrap(err, ErrTokenSigning.Error())
 	}
@@ -36,7 +36,7 @@ func (t *JWT) GenIdToken(
 func (t *JWT) ParseIdToken(token string) (IdTokenClaims, error) {
 	claims := IdTokenClaims{}
 
-	parsed, err := t.parse(token, &claims)
+	parsed, err := t.parse(t.IdSecret, token, &claims)
 	if err != nil {
 		return claims, errors.Wrap(err, ErrTokenParsing.Error())
 	}

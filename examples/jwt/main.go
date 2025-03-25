@@ -9,7 +9,9 @@ import (
 func main() {
 	// Create a new JWT instance
 	instance, err := jwt.NewJWT(
-		"secret",
+		"idSecret",
+		"accessSecret",
+		"refreshSecret",
 		"issuer",
 		[]string{"audience"},
 		jwt.WithIdTTL(jwt.DefaultIdTTL),

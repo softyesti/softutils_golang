@@ -68,9 +68,9 @@ func (t *JWT) gen(
 	}, nil
 }
 
-func (t *JWT) sign(claims jwt.Claims) (string, error) {
+func (t *JWT) sign(secret string, claims jwt.Claims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signed, err := token.SignedString([]byte(t.Secret))
+	signed, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", errors.Wrap(err, ErrTokenSigning.Error())
 	}
@@ -78,7 +78,7 @@ func (t *JWT) sign(claims jwt.Claims) (string, error) {
 	return signed, nil
 }
 
-func (t *JWT) parse(token string, claims jwt.Claims) (jwt.Claims, error) {
+func (t *JWT) parse(secret, token string, claims jwt.Claims) (jwt.Claims, error) {
 	if token == "" {
 		return jwt.RegisteredClaims{}, ErrEmptyToken
 	}
@@ -98,7 +98,7 @@ func (t *JWT) parse(token string, claims jwt.Claims) (jwt.Claims, error) {
 		token,
 		claims,
 		func(*jwt.Token) (any, error) {
-			return []byte(t.Secret), nil
+			return []byte(secret), nil
 		},
 		options...,
 	)

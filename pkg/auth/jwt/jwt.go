@@ -6,8 +6,14 @@ import (
 
 // Represents a JSON Web Token (JWT) instance with its configuration and options.
 type JWT struct {
-	//  Secret is the secret key used to sign the JWT.
-	Secret string
+	// IdSecret is the secret key used to sign the access token.
+	IdSecret string
+
+	// AccessSecret is the secret key used to sign the access token.
+	AccessSecret string
+
+	// RefreshSecret is the secret key used to sign the refresh token.
+	RefreshSecret string
 
 	// Issuer is the entity that issues the JWT.
 	Issuer string
@@ -37,13 +43,23 @@ type JWT struct {
 // - Access token TTL: 1 hour;
 // - Refresh token TTL: 24 hours.
 func NewJWT(
-	secret string,
+	idSecret string,
+	accessSecret string,
+	refreshSecret string,
 	issuer string,
 	audience []string,
 	options ...JWTOption,
 ) (JWT, error) {
-	if secret == "" {
-		return JWT{}, ErrEmptySecret
+	if idSecret == "" {
+		return JWT{}, ErrEmptyIdSecret
+	}
+
+	if accessSecret == "" {
+		return JWT{}, ErrEmptyAccessSecret
+	}
+
+	if refreshSecret == "" {
+		return JWT{}, ErrEmptyRefreshSecret
 	}
 
 	if issuer == "" {
@@ -55,12 +71,13 @@ func NewJWT(
 	}
 
 	instance := &JWT{
-		Secret:     secret,
-		Issuer:     issuer,
-		Audience:   audience,
-		IdTTL:      DefaultIdTTL,
-		AccessTTL:  DefaultAccessTTL,
-		RefreshTTL: DefaultRefreshTTL,
+		Issuer:        issuer,
+		Audience:      audience,
+		IdTTL:         DefaultIdTTL,
+		AccessTTL:     DefaultAccessTTL,
+		RefreshTTL:    DefaultRefreshTTL,
+		AccessSecret:  accessSecret,
+		RefreshSecret: refreshSecret,
 	}
 
 	for _, option := range options {
