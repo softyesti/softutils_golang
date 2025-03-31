@@ -9,7 +9,7 @@ import (
 // It returns the signed token as a string or an error if the generation fails.
 func (t *JWT) GenRefreshToken(
 	subject string,
-	options *refreshTokenOptions,
+	options *claimsOptions,
 ) (string, error) {
 	if subject == "" {
 		return "", ErrEmptySubject
@@ -20,7 +20,7 @@ func (t *JWT) GenRefreshToken(
 		return "", errors.Wrap(err, ErrClaimsCreation.Error())
 	}
 
-	claims := options.RefreshTokenClaims
+	claims := options.Claims
 	claims.RegisteredClaims = registered
 
 	signed, err := t.sign(t.RefreshSecret, claims)

@@ -9,7 +9,7 @@ import (
 // It returns the signed token as a string or an error if the generation fails.
 func (t *JWT) GenIdToken(
 	subject string,
-	options *idTokenOptions,
+	options *claimsOptions,
 ) (string, error) {
 	if subject == "" {
 		return "", ErrEmptySubject
@@ -20,7 +20,7 @@ func (t *JWT) GenIdToken(
 		return "", errors.Wrap(err, ErrClaimsCreation.Error())
 	}
 
-	claims := options.IdTokenClaims
+	claims := options.Claims
 	claims.RegisteredClaims = registered
 
 	signed, err := t.sign(t.IdSecret, claims)

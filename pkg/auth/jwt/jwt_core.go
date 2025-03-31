@@ -13,15 +13,15 @@ var _ IJWT = &JWT{}
 type IJWT interface {
 	// Generates an ID token with the given subject.
 	// It returns the signed token as a string or an error if the generation fails.
-	GenIdToken(subject string, options *idTokenOptions) (string, error)
+	GenIdToken(subject string, options *claimsOptions) (string, error)
 
 	// Generates an access token with the given subject and roles.
 	// It returns the signed token as a string or an error if the generation fails.
-	GenAccessToken(subject string, options *accessTokenOptions) (string, error)
+	GenAccessToken(subject string, options *claimsOptions) (string, error)
 
 	// Generates a refresh token with the given subject.
 	// It returns the signed token as a string or an error if the generation fails.
-	GenRefreshToken(subject string, options *refreshTokenOptions) (string, error)
+	GenRefreshToken(subject string, options *claimsOptions) (string, error)
 
 	// Parses an ID token and returns the claims.
 	// It verifies the token information and returns an error if verification fails.

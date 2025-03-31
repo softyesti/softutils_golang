@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/softyesti/softutils_golang/pkg/auth/jwt"
 )
@@ -23,33 +24,34 @@ func main() {
 	}
 
 	// Generate a new ID token
-	idTokenOptions := jwt.NewIdTokenOptions(
-		jwt.WithIdTokenName("John Doe"),
-		jwt.WithIdTokenEmail("john.doe@email.com"),
+	idClaimsOptions := jwt.NewClaimsOptions(
+		jwt.WithClaimsName("John Doe"),
+		jwt.WithClaimsAuthTime(time.Now().UTC()),
+		jwt.WithClaimsEmail("john.doe@email.com"),
 	)
 
-	idToken, err := instance.GenIdToken("subject", idTokenOptions)
+	idToken, err := instance.GenIdToken("subject", idClaimsOptions)
 	if err != nil {
 		panic(err)
 	}
 
 	// Generate a new Access token
-	accessTokenOptions := jwt.NewAccessTokenOptions(
-		jwt.WithAccessTokenRoles([]string{"admin", "user"}),
-		jwt.WithAccessTokenTenantId("tenant-id"),
+	accessClaimsOptions := jwt.NewClaimsOptions(
+		jwt.WithClaimsTenantId("tenant-id"),
+		jwt.WithClaimsRoles([]string{"admin"}),
 	)
 
-	accessToken, err := instance.GenAccessToken("subject", accessTokenOptions)
+	accessToken, err := instance.GenAccessToken("subject", accessClaimsOptions)
 	if err != nil {
 		panic(err)
 	}
 
 	// Generate a new Refresh token
-	refreshTokenOptions := jwt.NewRefreshTokenOptions(
-		jwt.WithRefreshTokenTenantId("tenant-id"),
+	refreshClaimsOptions := jwt.NewClaimsOptions(
+		jwt.WithClaimsTenantId("tenant-id"),
 	)
 
-	refreshToken, err := instance.GenRefreshToken("subject", refreshTokenOptions)
+	refreshToken, err := instance.GenRefreshToken("subject", refreshClaimsOptions)
 	if err != nil {
 		panic(err)
 	}
