@@ -29,6 +29,7 @@ func (claims *IdTokenClaims) Validate() error {
 type AccessTokenClaims struct {
 	jwt.RegisteredClaims
 	Roles    []string `json:"roles,omitempty"`
+	Email    string   `json:"email,omitempty"`
 	TenantId string   `json:"tenant_id,omitempty"`
 }
 
