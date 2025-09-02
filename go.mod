@@ -1,6 +1,6 @@
 module github.com/softyesti/softutils_golang
 
-go 1.24.1
+go 1.25.0
 
 require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3
